@@ -3,7 +3,6 @@ import { getGuitarra } from "../models/guitarras.server";
 import styles from "../styles/guitarras.css";
 
 export function meta({ data }) {
-  console.log("dataaa", data);
   if (!data) {
     console.log('no data')
     return {

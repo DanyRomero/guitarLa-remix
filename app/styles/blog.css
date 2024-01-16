@@ -14,7 +14,15 @@
   }
 }
 
+.post{
+  max-width: 80rem;
+  margin: 0 auto;
+  
+}
 
+.post .texto{
+  white-space: pre-wrap;
+}
 .post .resumen{
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -34,4 +42,8 @@
 .post .fecha{
   font-size: 1.6rem;
   color: var(--primary);
+}
+
+.mt-3 {
+  margin-top: 3rem;
 }

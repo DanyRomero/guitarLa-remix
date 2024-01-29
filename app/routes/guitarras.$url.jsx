@@ -1,10 +1,10 @@
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useOutletContext } from "@remix-run/react";
 import { getGuitarra } from "../models/guitarras.server";
 import { useState } from "react";
 
 export function meta({ data }) {
   if (!data) {
-    console.log('no data')
+    console.log("no data");
     return {
       title: `Guitarra no encontrada`,
       description: `Guitarra no encontrada`,
@@ -17,7 +17,6 @@ export function meta({ data }) {
     },
   ];
 }
-
 
 export async function loader({ params }) {
   const { url } = params;
@@ -32,9 +31,29 @@ export async function loader({ params }) {
 }
 
 const Guitarra = () => {
-  const [cantidad,setCantidad] = useState(0)
+  const [cantidad, setCantidad] = useState(0);
   const guitarra = useLoaderData();
   const { nombre, descripcion, imagen, precio } = guitarra[0]?.attributes;
+  const {agregarCarrito} = useOutletContext()
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(cantidad <1){
+      alert('Debes seleccionar una cantidad')
+      return
+    }
+    const guitarraSeleccionada = {
+      id:guitarra[0].id,
+      imagen:imagen.data.attributes.url,
+      nombre,
+      precio,
+      cantidad
+    }
+    agregarCarrito(guitarraSeleccionada)
+    console.log(guitarraSeleccionada)
+  };
+
   return (
     <div className="guitarra">
       <img
@@ -47,21 +66,17 @@ const Guitarra = () => {
         <p className="texto">{descripcion[0].children[0].text}</p>
         <p className="precio">{precio}</p>
 
-        <form className="formulario">
+        <form onSubmit={handleSubmit} className="formulario">
           <label htmlFor="cantidad">Cantidad</label>
-          <select 
-            id="cantidad"
-            onChange={e => setCantidad(+e.target.value)}
-          >
-            <option value="">-- Seleccione --</option>
+          <select id="cantidad" onChange={(e) => setCantidad(+e.target.value)}>
+            <option value="0">-- Seleccione --</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="5">5</option>
           </select>
-          <input type="submit" value={"Agregar al carrito"} /> 
-         
+          <input type="submit" value={"Agregar al carrito"} />
         </form>
       </div>
     </div>
